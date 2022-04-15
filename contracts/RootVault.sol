@@ -12,7 +12,7 @@ contract RootVault {
     /// The address of the token which can send to this address.
     address public immutable token;
 
-    /// The counter to record all the deposits inidividually.
+    /// The counter to record all the deposits individually.
     Counters.Counter private _depositCounter;
 
     /// The mapping of deposit id and the deposit amount.

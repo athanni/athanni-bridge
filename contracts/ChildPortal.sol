@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol';
 import './Portal.sol';
 import './ATNT20.sol';
 
-/// ChildPortal serves as a gateway into Theta network from Ethereum.
+/// ChildPortal serves as a gateway on Theta network that connects into Ethereum.
 contract ChildPortal is Portal {
     using Counters for Counters.Counter;
 

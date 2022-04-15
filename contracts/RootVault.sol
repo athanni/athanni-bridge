@@ -2,12 +2,14 @@
 pragma solidity ^0.8.13;
 
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 
 /// RootVault is a contract on Ethereum on which an ERC20 token is deposited before
 /// it can be minted on Theta as TNT20 token.
 contract RootVault {
     using Counters for Counters.Counter;
+    using SafeERC20 for IERC20;
 
     /// The address of the token which can send to this address.
     address public immutable token;
@@ -35,8 +37,7 @@ contract RootVault {
         receiverOf[id] = receiver;
 
         IERC20 erc20 = IERC20(token);
-        bool transferred = erc20.transferFrom(msg.sender, address(this), amount);
-        require(transferred, 'RootVault: TRANSFER_FAILED');
+        erc20.safeTransferFrom(msg.sender, address(this), amount);
         return id;
     }
 }

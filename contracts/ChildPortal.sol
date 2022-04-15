@@ -24,7 +24,7 @@ contract ChildPortal is Portal {
         address from,
         address to,
         uint256 amount
-    ) public virtual override onlyOwner {
+    ) public onlyOwner {
         require(amount > 0, 'ChildPortal: ZERO_SEND');
         // Add the partition.
         uint256 id = _partitionedId(_id);
@@ -40,7 +40,7 @@ contract ChildPortal is Portal {
         address token,
         address to,
         uint256 amount
-    ) public virtual override returns (uint256) {
+    ) public returns (uint256) {
         require(amount > 0, 'ChildPortal: ZERO_WITHDRAW');
 
         // Register the details of the transfer.

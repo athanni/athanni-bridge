@@ -68,22 +68,4 @@ abstract contract Portal is Ownable {
         transferDirection[id] = direction;
         transferredAmount[id] = amount;
     }
-
-    /// Mints the token of a given type and sends it. Only run this once respective token
-    /// is locked on the Root/ETH vault.
-    function send(
-        address token,
-        uint256 _id,
-        address from,
-        address to,
-        uint256 amount
-    ) public virtual;
-
-    /// Burns the amount of tokens sent to this vault and stores the address which is
-    /// going to receive the respective tokens on the root chain.
-    function withdraw(
-        address token,
-        address to,
-        uint256 amount
-    ) public virtual returns (uint256);
 }

@@ -63,7 +63,7 @@ contract RootPortal is Portal {
         store(id, token, from, to, amount);
 
         IERC20 erc20 = IERC20(token);
-        erc20.transfer(to, amount);
+        erc20.safeTransfer(to, amount);
     }
 
     /// Withdraws ETH from the portal after it has been verified that respective tokens were burnt on the other

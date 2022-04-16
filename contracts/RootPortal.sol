@@ -65,4 +65,25 @@ contract RootPortal is Portal {
         IERC20 erc20 = IERC20(token);
         erc20.transfer(to, amount);
     }
+
+    /// Withdraws ETH from the portal after it has been verified that respective tokens were burnt on the other
+    /// end of the portal.
+    function withdrawETH(
+        uint256 _id,
+        address from,
+        address to,
+        uint256 amount
+    ) public onlyOwner {
+        require(amount > 0, 'RootPortal: ZERO_WITHDRAW');
+        // Add the partition.
+        uint256 id = _partitionedId(_id);
+
+        /// ETH is not a ERC20 token so use this contract's address itself for the record.
+        address token = address(this);
+        store(id, token, from, to, amount);
+
+        address payable receiver = payable(to);
+        (bool sent, ) = receiver.call{value: amount}('');
+        require(sent, 'RootPortal: ETH_WITHDRAW_FAILED');
+    }
 }

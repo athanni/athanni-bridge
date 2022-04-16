@@ -18,6 +18,8 @@ contract RootPortal is Portal {
         address to,
         uint256 amount
     ) public returns (uint256) {
+        require(amount > 0, 'RootPortal: ZERO_SEND');
+
         // Register the details of the transfer.
         uint256 id = _counter.current();
         _counter.increment();
@@ -32,7 +34,7 @@ contract RootPortal is Portal {
     /// respective token on the other chain.
     function sendETH(address to) public payable returns (uint256) {
         uint256 amount = msg.value;
-        require(amount > 0, 'ChildPortal: ZERO_SEND');
+        require(amount > 0, 'RootPortal: ZERO_SEND');
 
         // Register the details of the transfer.
         uint256 id = _counter.current();

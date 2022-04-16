@@ -41,4 +41,23 @@ contract RootPortal is Portal {
         store(id, token, msg.sender, to, TransferDirection.OUT, amount);
         return id;
     }
+
+    /// Withdraws the tokens from the portal after it has been verified that respective tokens
+    /// were burnt on the other end of the portal.
+    function withdraw(
+        address token,
+        /// The id works a nonce and is used to keep a 1-to-1 record of transfer against the Child Portal.
+        uint256 _id,
+        address from,
+        address to,
+        uint256 amount
+    ) public onlyOwner {
+        require(amount > 0, 'RootPortal: ZERO_SEND');
+        // Add the partition.
+        uint256 id = _partitionedId(_id);
+        store(id, token, from, to, TransferDirection.IN, amount);
+
+        IERC20 erc20 = IERC20(token);
+        erc20.transfer(to, amount);
+    }
 }

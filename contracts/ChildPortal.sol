@@ -19,7 +19,7 @@ contract ChildPortal is Portal {
     ///    make the transfer permissionless.
     function send(
         address token,
-        /// The id works a nonce and is used to keep a 1-to-1 record of transfer against a RootVault.
+        /// The id works a nonce and is used to keep a 1-to-1 record of transfer against the Root Portal.
         uint256 _id,
         address from,
         address to,

@@ -28,7 +28,7 @@ contract ChildPortal is Portal {
         require(amount > 0, 'ChildPortal: ZERO_SEND');
         // Add the partition.
         uint256 id = _partitionedId(_id);
-        store(id, token, from, to, TransferDirection.IN, amount);
+        store(id, token, from, to, amount);
 
         ATNT20 tnt = ATNT20(token);
         tnt.mint(to, amount);
@@ -46,7 +46,7 @@ contract ChildPortal is Portal {
         // Register the details of the transfer.
         uint256 id = _counter.current();
         _counter.increment();
-        store(id, token, msg.sender, to, TransferDirection.OUT, amount);
+        store(id, token, msg.sender, to, amount);
 
         ERC20Burnable erc20 = ERC20Burnable(token);
         erc20.burnFrom(msg.sender, amount);

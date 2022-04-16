@@ -21,7 +21,7 @@ contract RootPortal is Portal {
         // Register the details of the transfer.
         uint256 id = _counter.current();
         _counter.increment();
-        store(id, token, msg.sender, to, TransferDirection.OUT, amount);
+        store(id, token, msg.sender, to, amount);
 
         IERC20 erc20 = IERC20(token);
         erc20.safeTransferFrom(msg.sender, address(this), amount);
@@ -38,7 +38,7 @@ contract RootPortal is Portal {
         // Because ETH is not a ERC20 token, we need another unique address to record this transfer.
         // Address of this contract itself works.
         address token = address(this);
-        store(id, token, msg.sender, to, TransferDirection.OUT, amount);
+        store(id, token, msg.sender, to, amount);
         return id;
     }
 
@@ -52,10 +52,10 @@ contract RootPortal is Portal {
         address to,
         uint256 amount
     ) public onlyOwner {
-        require(amount > 0, 'RootPortal: ZERO_SEND');
+        require(amount > 0, 'RootPortal: ZERO_WITHDRAW');
         // Add the partition.
         uint256 id = _partitionedId(_id);
-        store(id, token, from, to, TransferDirection.IN, amount);
+        store(id, token, from, to, amount);
 
         IERC20 erc20 = IERC20(token);
         erc20.transfer(to, amount);

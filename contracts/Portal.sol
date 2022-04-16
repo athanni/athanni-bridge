@@ -9,12 +9,6 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 abstract contract Portal is Ownable {
     using Counters for Counters.Counter;
 
-    /// The direction in which a token is transferred to or out the vault.
-    enum TransferDirection {
-        IN,
-        OUT
-    }
-
     /// The counter for transfer id.
     Counters.Counter internal _counter;
 
@@ -26,9 +20,6 @@ abstract contract Portal is Ownable {
 
     /// The address which is receiving the amount against a transfer id.
     mapping(uint256 => address) public transferredTo;
-
-    /// The direction of transfer against a transfer id.
-    mapping(uint256 => TransferDirection) public transferDirection;
 
     /// The amount that is received against a transfer id.
     mapping(uint256 => uint256) public transferredAmount;
@@ -51,7 +42,6 @@ abstract contract Portal is Ownable {
         address token,
         address from,
         address to,
-        TransferDirection direction,
         uint256 amount
     ) internal {
         require(
@@ -65,7 +55,6 @@ abstract contract Portal is Ownable {
         tokenAddress[id] = token;
         transferredBy[id] = from;
         transferredTo[id] = to;
-        transferDirection[id] = direction;
         transferredAmount[id] = amount;
     }
 }

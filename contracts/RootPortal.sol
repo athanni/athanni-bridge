@@ -30,7 +30,10 @@ contract RootPortal is Portal {
 
     /// Deposits ETH to this portal and stores the address which is going to receive the
     /// respective token on the other chain.
-    function sendETH(address to, uint256 amount) public payable returns (uint256) {
+    function sendETH(address to) public payable returns (uint256) {
+        uint256 amount = msg.value;
+        require(amount > 0, 'ChildPortal: ZERO_SEND');
+
         // Register the details of the transfer.
         uint256 id = _counter.current();
         _counter.increment();

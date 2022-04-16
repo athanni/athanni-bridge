@@ -8,19 +8,19 @@ import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol';
 /// on Ethereum. The ATNT20 is a token that is minted 1:1 to the ERC20 token/ETH.
 contract ATNT20 is ERC20, ERC20Burnable {
     /// The address of the Child Portal. Only the portal can mint a token.
-    address public immutable owner;
+    address public immutable portal;
 
     constructor(
-        address _owner,
+        address _portal,
         string memory name,
         string memory symbol
     ) ERC20(name, symbol) {
-        owner = _owner;
+        portal = _portal;
     }
 
     /// Mint a token when requested by the Child Vault.
     function mint(address to, uint256 amount) public {
-        require(msg.sender == owner, 'ATNT20: UNAUTHORIZED');
+        require(msg.sender == portal, 'ATNT20: UNAUTHORIZED');
         _mint(to, amount);
     }
 }

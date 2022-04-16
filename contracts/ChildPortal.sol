@@ -10,6 +10,13 @@ import './ATNT20.sol';
 contract ChildPortal is Portal {
     using Counters for Counters.Counter;
 
+    /// Deploys a new ATNT20 token with this Portal as the sole minter.
+    function deployATNT20(string memory name, string memory symbol) public onlyOwner returns (address) {
+        address portal = address(this);
+        ATNT20 tnt = new ATNT20(portal, name, symbol);
+        return address(tnt);
+    }
+
     /// Mints the token of a given type and sends it. Only run this once respective token
     /// is locked on the Root Portal.
     ///

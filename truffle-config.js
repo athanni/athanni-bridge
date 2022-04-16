@@ -8,13 +8,10 @@ module.exports = {
       provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, 'https://eth-rpc-api-testnet.thetatoken.org/rpc'),
       network_id: 365,
     },
-    thetaMainnet: {
-      provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, 'https://eth-rpc-api.thetatoken.org/rpc'),
-      network_id: 361,
-    },
-    maticTestnet: {
-      provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, 'https://matic-mumbai.chainstacklabs.com'),
-      network_id: 80001,
+    rinkeby: {
+      provider: () =>
+        new HDWalletProvider(process.env.PRIVATE_KEY, 'https://rinkeby.infura.io/v3/fc540662631c4028a8ca161b8c2e0955'),
+      network_id: 4,
     },
   },
   compilers: {
@@ -31,6 +28,6 @@ module.exports = {
   },
   plugins: ['truffle-plugin-verify'],
   api_keys: {
-    polygonscan: process.env.POLYGONSCAN_KEY,
+    etherscan: process.env.ETHERSCAN_KEY,
   },
 };

@@ -29,11 +29,11 @@ abstract contract Portal is Ownable {
     /// has a unique linked portal on the other end. To separate the id generated in this portal from
     /// ids generated on another, this partition is used.
     /// The result: the id value is uint255 in reality.
-    uint256 private immutable _parition = 1 << 255;
+    uint256 private immutable _partition = 1 << 255;
 
     /// Get the partitioned id of an external id.
     function _partitionedId(uint256 id) internal pure returns (uint256) {
-        return id + _parition;
+        return id + _partition;
     }
 
     /// Store the record of transfer.

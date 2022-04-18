@@ -11,13 +11,16 @@ contract RootPortal is Portal {
     using Counters for Counters.Counter;
     using SafeERC20 for IERC20;
 
+    event TokenSent(uint256 id);
+    event TokenWithdrawn(uint256 id);
+
     /// Deposits the amount of tokens to this portal and stores the address which is
     /// going to receive the respective tokens on the other chain.
     function send(
         address token,
         address to,
         uint256 amount
-    ) public returns (uint256) {
+    ) public {
         require(amount > 0, 'RootPortal: ZERO_SEND');
 
         // Register the details of the transfer.
@@ -27,12 +30,13 @@ contract RootPortal is Portal {
 
         IERC20 erc20 = IERC20(token);
         erc20.safeTransferFrom(msg.sender, address(this), amount);
-        return id;
+
+        emit TokenSent(id);
     }
 
     /// Deposits ETH to this portal and stores the address which is going to receive the
     /// respective token on the other chain.
-    function sendETH(address to) public payable returns (uint256) {
+    function sendETH(address to) public payable {
         uint256 amount = msg.value;
         require(amount > 0, 'RootPortal: ZERO_SEND');
 
@@ -44,7 +48,8 @@ contract RootPortal is Portal {
         // Address of this contract itself works.
         address token = address(this);
         store(id, token, msg.sender, to, amount);
-        return id;
+
+        emit TokenSent(id);
     }
 
     /// Withdraws the tokens from the portal after it has been verified that respective tokens
@@ -64,6 +69,8 @@ contract RootPortal is Portal {
 
         IERC20 erc20 = IERC20(token);
         erc20.safeTransfer(to, amount);
+
+        emit TokenWithdrawn(id);
     }
 
     /// Withdraws ETH from the portal after it has been verified that respective tokens were burnt on the other
@@ -85,5 +92,7 @@ contract RootPortal is Portal {
         address payable receiver = payable(to);
         (bool sent, ) = receiver.call{value: amount}('');
         require(sent, 'RootPortal: ETH_WITHDRAW_FAILED');
+
+        emit TokenWithdrawn(id);
     }
 }

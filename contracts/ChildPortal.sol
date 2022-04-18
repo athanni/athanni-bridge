@@ -10,11 +10,15 @@ import './ATNT20.sol';
 contract ChildPortal is Portal {
     using Counters for Counters.Counter;
 
+    event ATNT20Created(address token);
+    event TokenSent(uint256 id);
+    event TokenWithdrawn(uint256 id);
+
     /// Deploys a new ATNT20 token with this Portal as the sole minter.
-    function deployATNT20(string memory name, string memory symbol) public onlyOwner returns (address) {
+    function deployATNT20(string memory name, string memory symbol) public onlyOwner {
         address portal = address(this);
         ATNT20 tnt = new ATNT20(portal, name, symbol);
-        return address(tnt);
+        emit ATNT20Created(address(tnt));
     }
 
     /// Mints the token of a given type and sends it. Only run this once respective token
@@ -39,6 +43,8 @@ contract ChildPortal is Portal {
 
         ATNT20 tnt = ATNT20(token);
         tnt.mint(to, amount);
+
+        emit TokenSent(id);
     }
 
     /// Burns the amount of tokens sent to this vault and stores the address which is
@@ -47,7 +53,7 @@ contract ChildPortal is Portal {
         address token,
         address to,
         uint256 amount
-    ) public returns (uint256) {
+    ) public {
         require(amount > 0, 'ChildPortal: ZERO_WITHDRAW');
 
         // Register the details of the transfer.
@@ -57,6 +63,7 @@ contract ChildPortal is Portal {
 
         ERC20Burnable erc20 = ERC20Burnable(token);
         erc20.burnFrom(msg.sender, amount);
-        return id;
+
+        emit TokenWithdrawn(id);
     }
 }

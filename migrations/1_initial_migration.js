@@ -4,7 +4,7 @@ const ChildPortal = artifacts.require('./ChildPortal');
 /// Deploy the portals to the respective networks.
 module.exports = async function (deployer) {
   switch (deployer.network) {
-    case 'thetaNetwork':
+    case 'thetaTestnet':
       await deployer.deploy(ChildPortal);
       return;
     case 'rinkeby':
